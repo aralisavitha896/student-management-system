@@ -34,8 +34,21 @@ function AddStudent() {
         <input type="text" name="rollNumber" placeholder="Roll Number" onChange={handleChange} required />
         <input type="email" name="email" placeholder="Email Address" onChange={handleChange} required />
         <input type="text" name="phoneNumber" placeholder="Phone Number" onChange={handleChange} />
-        <input type="text" name="department" placeholder="Department" onChange={handleChange} />
-        <input type="text" name="academicYear" placeholder="Academic Year" onChange={handleChange} />
+        <select name="department" onChange={handleChange} required className="custom-select" style={{width: '100%'}}>
+          <option value="">Select Department</option>
+          <option value="CS">CS</option>
+          <option value="IT">IT</option>
+          <option value="Mechanical">Mechanical</option>
+          <option value="E&C">E&C</option>
+        </select>
+        <label>Academic Year</label>
+        <select name="academicYear" onChange={handleChange} required className="custom-select">
+          <option value="">Select Year</option>
+          <option value="1">1st Year</option>
+          <option value="2">2nd Year</option>
+          <option value="3">3rd Year</option>
+          <option value="4">4th Year</option>
+        </select>
         <input type="text" name="address" placeholder="Address" onChange={handleChange} />
         <button type="submit" style={{ padding: '10px', backgroundColor: '#4CAF50', color: 'white', cursor: 'pointer' }}>Save Student</button>
       </form>

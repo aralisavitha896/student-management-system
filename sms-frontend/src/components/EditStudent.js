@@ -2,67 +2,76 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 
-function EditStudent() {
-  const { id } = useParams(); // Grabs the student ID from the URL
+function EditStudent({ user }) { // 1. Added user prop
+  const { id } = useParams();
   const navigate = useNavigate();
   
-  // State to hold the student data
   const [student, setStudent] = useState({
     name: '', rollNumber: '', email: '', phoneNumber: '', department: '', academicYear: '', address: ''
   });
 
-  // 1. VIEWING ONE STUDENT'S DETAILS (Runs when the page opens)
   useEffect(() => {
     axios.get(`http://localhost:8080/api/students/${id}`)
       .then(response => {
-        setStudent(response.data); // Fills the form with the existing data
+        setStudent(response.data);
       })
       .catch(error => console.error(error));
   }, [id]);
 
-  // Handle typing in the input boxes
   const handleChange = (e) => {
     setStudent({ ...student, [e.target.name]: e.target.value });
   };
 
-  // 2. UPDATING STUDENT INFORMATION (Runs when you click Save)
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.put(`http://localhost:8080/api/students/${id}`, student)
-      .then(response => {
-        alert("Student Updated Successfully!");
-        navigate('/'); // Go back to the main list
+    
+    // 2. Logic: Use different endpoints based on the Role
+    const url = user.role === 'ADMIN' 
+      ? `http://localhost:8080/api/students/${id}` 
+      : `http://localhost:8080/api/students/${id}/profile`;
+
+    axios.put(url, student)
+      .then(() => {
+        alert(user.role === 'ADMIN' ? "Student Updated Successfully!" : "Profile Updated Successfully!");
+        navigate('/');
       })
-      .catch(error => console.error(error));
+      .catch(error => alert("Update failed: " + error.message));
   };
 
   return (
-    <div>
-      <h2>Edit Student Details</h2>
-      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', width: '300px', gap: '10px' }}>
-        <label>Name:</label>
-        <input type="text" name="name" value={student.name} onChange={handleChange} required />
+    <div className="dashboard-container" style={{maxWidth: '500px'}}>
+      <h2>{user.role === 'ADMIN' ? 'Edit Student Details' : 'Update My Profile'}</h2>
+      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
         
-        <label>Roll Number:</label>
-        <input type="text" name="rollNumber" value={student.rollNumber} onChange={handleChange} required />
-        
-        <label>Email:</label>
-        <input type="email" name="email" value={student.email} onChange={handleChange} required />
+        {/* 3. Fields only Admin can see/edit */}
+        {user.role === 'ADMIN' && (
+          <>
+            <label>Full Name:</label>
+            <input className="custom-input" type="text" name="name" value={student.name} onChange={handleChange} required />
+            
+            <label>Roll Number:</label>
+            <input className="custom-input" type="text" name="rollNumber" value={student.rollNumber} onChange={handleChange} required />
+            
+            <label>Department:</label>
+            <input className="custom-input" type="text" name="department" value={student.department} onChange={handleChange} />
+            
+            <label>Academic Year:</label>
+            <input className="custom-input" type="text" name="academicYear" value={student.academicYear} onChange={handleChange} />
+          </>
+        )}
+
+        {/* 4. Fields both Admin and Student can edit */}
+        <label>Email Address:</label>
+        <input className="custom-input" type="email" name="email" value={student.email} onChange={handleChange} required />
         
         <label>Phone Number:</label>
-        <input type="text" name="phoneNumber" value={student.phoneNumber} onChange={handleChange} />
-        
-        <label>Department:</label>
-        <input type="text" name="department" value={student.department} onChange={handleChange} />
-        
-        <label>Academic Year:</label>
-        <input type="text" name="academicYear" value={student.academicYear} onChange={handleChange} />
+        <input className="custom-input" type="text" name="phoneNumber" value={student.phoneNumber} onChange={handleChange} />
         
         <label>Address:</label>
-        <input type="text" name="address" value={student.address} onChange={handleChange} />
+        <input className="custom-input" type="text" name="address" value={student.address} onChange={handleChange} />
         
-        <button type="submit" style={{ padding: '10px', backgroundColor: '#2196F3', color: 'white', cursor: 'pointer', border: 'none' }}>
-          Update Student
+        <button type="submit" className="btn btn-edit" style={{ padding: '12px', marginTop: '10px' }}>
+          {user.role === 'ADMIN' ? 'Save Changes' : 'Update Profile'}
         </button>
       </form>
     </div>
