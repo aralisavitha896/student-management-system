@@ -4,12 +4,13 @@ import { useNavigate } from 'react-router-dom';
 
 // 1. Receive setUser as a prop from App.js
 function Login({ setUser }) {
+  //email and password inputs
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
   const handleLogin = (e) => {
-    e.preventDefault();
+    e.preventDefault();//prevents page reload
     axios.post('http://localhost:8080/api/students/login', { 
       email: email, 
       password: password 

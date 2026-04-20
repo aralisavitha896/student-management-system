@@ -98,7 +98,16 @@ return (
             )}
           </div>
         </nav>
-
+        <Route 
+            path="/" 
+            element={
+              !user ? <Navigate to="/login" /> : // If not logged in, go to login
+              user.role === 'ADMIN' ? <StudentList user={user} /> :
+              user.role === 'FACULTY' ? <FacultyDashboard user={user} /> :
+              user.role === 'STUDENT' ? <StudentList user={user} /> :
+              <Navigate to="/login" />
+            } 
+          />
         {/* The Routes */}
         <Routes>
           <Route path="/login" element={<Login setUser={setUser} />} />
