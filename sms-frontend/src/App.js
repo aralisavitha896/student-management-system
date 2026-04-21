@@ -5,8 +5,10 @@ import AddStudent from './components/AddStudent';
 import EditStudent from './components/EditStudent';
 import Login from './components/Login';
 import ChangePassword from './components/ChangePassword';
-import FacultyDashboard from './components/FacultyDashboard'; // Ensure this is created
+import FacultyDashboard from './components/FacultyDashboard'; 
 import './App.css';
+import StaffDashboard from './components/StaffDashboard';
+import AddSubject from './components/AddSubject';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -44,9 +46,17 @@ function App() {
               <>
                 <Link to="/" style={{ background: '#10b981', color: 'white', padding: '5px 12px', borderRadius: '5px', marginLeft: '15px', textDecoration: 'none', fontSize: '14px', fontWeight: 'bold' }}>Dashboard</Link>
                 
-                {user.role === 'ADMIN' && (
-                  <Link to="/add" style={{ background: '#10b981', color: 'white', padding: '5px 12px', borderRadius: '5px', marginLeft: '15px', textDecoration: 'none', fontSize: '14px', fontWeight: 'bold' }}>+ Add Student</Link>
+                {user.role === 'ADMIN' && (<>
+                    <Link to="/add" style={{ background: '#10b981', color: 'white', padding: '5px 12px', borderRadius: '5px', marginLeft: '15px', textDecoration: 'none', fontSize: '14px', fontWeight: 'bold' }}>
+                      + Add Student
+                    </Link>
+                    
+                    <Link to="/add-subject" style={{ background: '#10b981', color: 'white', padding: '5px 12px', borderRadius: '5px', marginLeft: '15px', textDecoration: 'none', fontSize: '14px', fontWeight: 'bold' }}>
+                      + Add Subject
+                    </Link>
+                  </>
                 )}
+                
                 
                 <Link to="/change-password" style={{ background: '#10b981', color: 'white', padding: '5px 12px', borderRadius: '5px', marginLeft: '15px', textDecoration: 'none', fontSize: '14px', fontWeight: 'bold' }}>Settings</Link>
                 
@@ -71,6 +81,7 @@ function App() {
               user.role === 'ADMIN' ? <StudentList user={user} /> :
               user.role === 'FACULTY' ? <FacultyDashboard user={user} /> :
               user.role === 'STUDENT' ? <StudentList user={user} /> :
+              user.role === 'STAFF' ? <StaffDashboard user={user} /> :
               <Navigate to="/login" replace />
             } 
           />
@@ -79,7 +90,7 @@ function App() {
           <Route path="/add" element={user?.role === 'ADMIN' ? <AddStudent /> : <Navigate to="/" replace />} />
           <Route path="/edit/:id" element={user ? <EditStudent user={user} /> : <Navigate to="/login" replace />} />
           <Route path="/change-password" element={user ? <ChangePassword user={user} /> : <Navigate to="/login" replace />} />
-          
+          <Route path="/add-subject" element={user?.role === 'ADMIN' ? <AddSubject /> : <Navigate to="/" />} />
           {/* Fallback Catch-all */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
