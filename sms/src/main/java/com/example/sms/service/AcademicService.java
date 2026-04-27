@@ -1,4 +1,4 @@
-package com.yourname.sms.service;
+package com.example.sms.service;
 
 import org.springframework.stereotype.Service;
 import java.util.List;

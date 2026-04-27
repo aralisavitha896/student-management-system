@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../api';
 import { Link } from 'react-router-dom';
 
 function StudentList({ user }) {
@@ -19,20 +19,20 @@ function StudentList({ user }) {
   }, [user]);
 
   const loadStudents = () => {
-    axios.get('http://localhost:8080/api/students')
+    api.get('/api/students')
       .then(response => setStudents(response.data))
       .catch(error => console.error(error));
   };
 
   const loadAcademicRecords = () => {
-    axios.get(`http://localhost:8080/api/academic/records/${user.id}`)
+    api.get(`/api/academic/records/${user.id}`)
       .then(response => setAcademicRecords(response.data))
       .catch(error => console.error("Error loading academic records", error));
   };
 
   const deleteStudent = (id) => {
     if (window.confirm("Are you sure you want to delete this student?")) {
-      axios.delete(`http://localhost:8080/api/students/${id}`)
+      api.delete(`/api/students/${id}`)
         .then(() => {
           loadStudents();
           setCurrentPage(1);

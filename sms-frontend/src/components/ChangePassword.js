@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import api from '../api';
 import { useNavigate } from 'react-router-dom';
 
 function ChangePassword({ user }) {
@@ -17,7 +17,7 @@ function ChangePassword({ user }) {
       return;
     }
 
-    axios.post(`http://localhost:8080/api/students/${user.id}/change-password`, {
+    api.post(`/api/students/${user.id}/change-password`, {
       oldPassword: passwords.oldPassword,
       newPassword: passwords.newPassword
     })

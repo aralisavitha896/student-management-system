@@ -95,3 +95,133 @@ sstudent_management_system
       └─ setupTests.js
 
 ```
+```
+sstudent_management_system
+├─ README.md
+├─ sms
+│  ├─ .mvn
+│  │  └─ wrapper
+│  │     └─ maven-wrapper.properties
+│  ├─ mvnw
+│  ├─ mvnw.cmd
+│  ├─ pom.xml
+│  ├─ src
+│  │  ├─ main
+│  │  │  ├─ java
+│  │  │  │  └─ com
+│  │  │  │     └─ example
+│  │  │  │        └─ sms
+│  │  │  │           ├─ controller
+│  │  │  │           │  ├─ AcademicController.java
+│  │  │  │           │  ├─ EnrollmentController.java
+│  │  │  │           │  ├─ FacultyController.java
+│  │  │  │           │  ├─ StudentController.java
+│  │  │  │           │  └─ SubjectController.java
+│  │  │  │           ├─ entity
+│  │  │  │           │  ├─ Enrollment.java
+│  │  │  │           │  ├─ Faculty.java
+│  │  │  │           │  ├─ Student.java
+│  │  │  │           │  └─ Subject.java
+│  │  │  │           ├─ repository
+│  │  │  │           │  ├─ EnrollmentRepository.java
+│  │  │  │           │  ├─ FacultyRepository.java
+│  │  │  │           │  ├─ StudentRepository.java
+│  │  │  │           │  └─ SubjectRepository.java
+│  │  │  │           ├─ service
+│  │  │  │           │  ├─ AcademicService.java
+│  │  │  │           │  ├─ EnrollmentService.java
+│  │  │  │           │  ├─ FacultyService.java
+│  │  │  │           │  └─ StudentService.java
+│  │  │  │           ├─ SmsApplication.java
+│  │  │  │           └─ WebConfig.java
+│  │  │  └─ resources
+│  │  │     └─ application.properties
+│  │  └─ test
+│  │     └─ java
+│  │        └─ com
+│  │           └─ example
+│  │              └─ sms
+│  │                 └─ SmsApplicationTests.java
+│  └─ target
+│     ├─ classes
+│     │  ├─ application.properties
+│     │  └─ com
+│     │     └─ example
+│     │        └─ sms
+│     │           ├─ controller
+│     │           │  ├─ AcademicController.class
+│     │           │  ├─ EnrollmentController.class
+│     │           │  ├─ FacultyController.class
+│     │           │  ├─ StudentController.class
+│     │           │  └─ SubjectController.class
+│     │           ├─ entity
+│     │           │  ├─ Enrollment.class
+│     │           │  ├─ Faculty.class
+│     │           │  ├─ Student.class
+│     │           │  └─ Subject.class
+│     │           ├─ repository
+│     │           │  ├─ EnrollmentRepository.class
+│     │           │  ├─ FacultyRepository.class
+│     │           │  ├─ StudentRepository.class
+│     │           │  └─ SubjectRepository.class
+│     │           ├─ service
+│     │           │  ├─ AcademicService.class
+│     │           │  ├─ EnrollmentService.class
+│     │           │  ├─ FacultyService.class
+│     │           │  └─ StudentService.class
+│     │           ├─ SmsApplication.class
+│     │           └─ WebConfig.class
+│     ├─ generated-sources
+│     │  └─ annotations
+│     ├─ generated-test-sources
+│     │  └─ test-annotations
+│     ├─ maven-status
+│     │  └─ maven-compiler-plugin
+│     │     ├─ compile
+│     │     │  └─ default-compile
+│     │     │     ├─ createdFiles.lst
+│     │     │     └─ inputFiles.lst
+│     │     └─ testCompile
+│     │        └─ default-testCompile
+│     │           ├─ createdFiles.lst
+│     │           └─ inputFiles.lst
+│     └─ test-classes
+│        └─ com
+│           └─ example
+│              └─ sms
+│                 └─ SmsApplicationTests.class
+└─ sms-frontend
+   ├─ package-lock.json
+   ├─ package.json
+   ├─ public
+   │  ├─ favicon.ico
+   │  ├─ index.html
+   │  ├─ logo192.png
+   │  ├─ logo512.png
+   │  ├─ manifest.json
+   │  └─ robots.txt
+   ├─ README.md
+   └─ src
+      ├─ App.css
+      ├─ App.js
+      ├─ App.test.js
+      ├─ components
+      │  ├─ AddFaculty.js
+      │  ├─ AddStudent.js
+      │  ├─ AddSubject.js
+      │  ├─ ChangePassword.js
+      │  ├─ EditStudent.js
+      │  ├─ EnrollStudent.js
+      │  ├─ FacultyDashboard.js
+      │  ├─ FacultyList.js
+      │  ├─ Login.js
+      │  ├─ StaffDashboard.js
+      │  ├─ StudentAcademicDashboard.js
+      │  └─ StudentList.js
+      ├─ index.css
+      ├─ index.js
+      ├─ logo.svg
+      ├─ reportWebVitals.js
+      └─ setupTests.js
+
+```

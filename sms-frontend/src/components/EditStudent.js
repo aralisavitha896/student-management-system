@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../api';
 import { useNavigate, useParams } from 'react-router-dom';
 
 function EditStudent({ user }) { // 1. Added user prop
@@ -11,7 +11,7 @@ function EditStudent({ user }) { // 1. Added user prop
   });
 
   useEffect(() => {
-    axios.get(`http://localhost:8080/api/students/${id}`)
+    api.get(`/api/students/${id}`)
       .then(response => {
         setStudent(response.data);
       })
@@ -27,10 +27,10 @@ function EditStudent({ user }) { // 1. Added user prop
     
     // 2. Logic: Use different endpoints based on the Role
     const url = user.role === 'ADMIN' 
-      ? `http://localhost:8080/api/students/${id}` 
-      : `http://localhost:8080/api/students/${id}/profile`;
+      ? `/api/students/${id}` 
+      : `/api/students/${id}/profile`;
 
-    axios.put(url, student)
+    api.put(url, student)
       .then(() => {
         alert(user.role === 'ADMIN' ? "Student Updated Successfully!" : "Profile Updated Successfully!");
         navigate('/');

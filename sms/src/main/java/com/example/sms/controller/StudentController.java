@@ -10,51 +10,27 @@ import java.util.Map;
 import java.util.List;
 import java.util.Optional;
 
-@CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
 @RestController
 @RequestMapping("/api/students")
 public class StudentController {
 
-    @Autowired 
+    @Autowired
     private StudentService service;
+
+    @Autowired
+    private com.example.sms.security.AuthService authService;
 
     @PostMapping("/login") 
     public ResponseEntity<?> login(@RequestBody Map<String, String> credentials) { 
-        String email = credentials.get("email"); 
-        String password = credentials.get("password");
-
-        System.out.println("Login Attempt: Email=" + email);
-
-        // 1. Hardcoded Admin Check (Optional)
-        if ("admin@sms.com".equals(email) && "admin123".equals(password)) { 
-            return ResponseEntity.ok(Map.of( 
-                "role", "ADMIN",  
-                "name", "System Admin",
-                "email", email
-            )); 
-        }
-
-        // 2. Database User Check
-        List<Student> allUsers = service.getAllStudents(); 
-        Optional<Student> user = allUsers.stream() 
-            .filter(s -> s.getEmail().equals(email) && s.getPassword() != null && s.getPassword().equals(password)) 
-            .findFirst();
-
-        if (user.isPresent()) { 
-            Student s = user.get(); 
+        try {
+            String email = credentials.get("email") != null ? credentials.get("email").trim() : ""; 
+            String password = credentials.get("password");
             
-            // --- CRITICAL FIX: Fetch role dynamically from DB ---
-            String databaseRole = s.getRole() != null ? s.getRole().toUpperCase() : "STUDENT";
-
-            return ResponseEntity.ok(Map.of( 
-                "role", databaseRole,  
-                "id", s.getId(), 
-                "name", s.getName(),
-                "email", s.getEmail()
-            )); 
+            Map<String, Object> response = authService.login(email, password);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         }
-
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password"); 
     }
 
     @PostMapping 
