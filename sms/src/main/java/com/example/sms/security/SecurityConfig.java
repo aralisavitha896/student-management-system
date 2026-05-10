@@ -21,7 +21,7 @@ import java.util.List;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Value("${frontend.url:*}")
+    @Value("${frontend.url}")
     private String frontendUrl;
 
     private final JwtFilter jwtFilter;
@@ -57,7 +57,7 @@ public class SecurityConfig {
         
         // Split comma-separated origins from environment variable
         List<String> allowedOrigins = Arrays.asList(frontendUrl.split(","));
-        configuration.setAllowedOrigins(allowedOrigins); 
+        configuration.setAllowedOriginPatterns(allowedOrigins); 
         
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "Accept"));
