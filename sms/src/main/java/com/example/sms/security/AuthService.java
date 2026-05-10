@@ -76,13 +76,14 @@ public class AuthService {
         );
     }
 
+    @Transactional
     public RefreshToken createRefreshToken(String email) {
         refreshTokenRepository.deleteByUserEmail(email); // Clear old tokens
 
         RefreshToken refreshToken = new RefreshToken();
         refreshToken.setUserEmail(email);
         refreshToken.setToken(UUID.randomUUID().toString());
-        refreshToken.setExpiryDate(Instant.now().plusMillis(604800000)); // 7 days
+        refreshToken.setExpiryDate(Instant.now().plusMillis(jwtUtil.getRefreshExpiration())); // Use value from JwtUtil
 
         return refreshTokenRepository.save(refreshToken);
     }
@@ -91,17 +92,25 @@ public class AuthService {
         return refreshTokenRepository.findByToken(refreshTokenRequest)
                 .map(this::verifyExpiration)
                 .map(token -> {
-                    // We need the role. For simplicity, we check student then faculty
-                    String role = "STUDENT";
-                    Optional<Student> s = studentRepository.findByEmail(token.getUserEmail());
-                    if (s.isPresent()) role = s.get().getRole();
-                    else {
-                        Optional<Faculty> f = facultyRepository.findByEmail(token.getUserEmail());
-                        if (f.isPresent()) role = f.get().getRole();
-                        else if (token.getUserEmail().equals("admin@sms.com")) role = "ADMIN";
+                    String email = token.getUserEmail();
+                    String role = "STUDENT"; // Default
+
+                    // Resolve role
+                    if ("admin@sms.com".equalsIgnoreCase(email)) {
+                        role = "ADMIN";
+                    } else {
+                        Optional<Student> s = studentRepository.findByEmail(email);
+                        if (s.isPresent()) {
+                            role = s.get().getRole();
+                        } else {
+                            Optional<Faculty> f = facultyRepository.findByEmail(email);
+                            if (f.isPresent()) {
+                                role = f.get().getRole();
+                            }
+                        }
                     }
 
-                    String accessToken = jwtUtil.generateAccessToken(token.getUserEmail(), role);
+                    String accessToken = jwtUtil.generateAccessToken(email, role);
                     return Map.of("accessToken", accessToken, "refreshToken", token.getToken());
                 })
                 .orElseThrow(() -> new RuntimeException("Refresh token is not in database!"));

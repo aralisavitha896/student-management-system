@@ -12,7 +12,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addMapping("/**") // Allow all endpoints
                 .allowedOrigins("http://localhost:3000") // Your React app
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                .allowedHeaders("*")
+                .allowedHeaders("*") //Ex:Content-Type,Authorization
                 .allowCredentials(true);
     }
 }

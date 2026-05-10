@@ -25,6 +25,10 @@ public class JwtUtil {
     @Value("${jwt.refresh.expiration:604800000}") // 7 days
     private long refreshExpiration;
 
+    public long getRefreshExpiration() {
+        return refreshExpiration;
+    }
+
     private SecretKey getSigningKey() {
         byte[] keyBytes = secret.getBytes(StandardCharsets.UTF_8);
         return Keys.hmacShaKeyFor(keyBytes);

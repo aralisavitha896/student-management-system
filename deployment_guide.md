@@ -2,48 +2,36 @@
 
 Follow these steps to deploy your Student Management System to the cloud.
 
-## 1. Cloud Database (PostgreSQL)
-We recommend using **Supabase** or **Neon.tech** for a free managed PostgreSQL database.
+## 1. Cloud Database (Supabase)
+Supabase provides a powerful PostgreSQL database.
 
-1. Create a project on [Supabase](https://supabase.com) or [Neon](https://neon.tech).
-2. Get your Connection String (JDBC format). It will look something like:
-   `jdbc:postgresql://ep-lucky-art-123456.us-east-2.aws.neon.tech/neondb`
-3. Note down the **DB_URL**, **DB_USERNAME**, and **DB_PASSWORD**.
+1. Go to your [Supabase Dashboard](https://supabase.com/dashboard/projects).
+2. Go to **Project Settings** -> **Database**.
+3. Under **Connection String**, select **JDBC**.
+4. Copy the URL. It will look like: `jdbc:postgresql://db.xxx.supabase.co:5432/postgres`
+5. Note your **Database Password** (the one you set when creating the project).
 
-## 2. Backend Deployment (Render)
-[Render](https://render.com) is excellent for Spring Boot apps.
+## 2. Backend Deployment (Render / Railway)
+You can deploy the Spring Boot app directly or using the `Dockerfile`.
 
-1. Create a new **Web Service** and connect your GitHub repository.
-2. Select the `sms` directory as the **Root Directory**.
-3. **Build Command**: `./mvnw clean install -DskipTests`
-4. **Start Command**: `java -jar target/sms-0.0.1-SNAPSHOT.jar`
-5. Go to the **Environment** tab and add these variables:
-   - `DB_URL`: your_jdbc_connection_string
-   - `DB_USERNAME`: your_db_user
-   - `DB_PASSWORD`: your_db_password
-   - `JWT_SECRET`: a_long_random_string_at_least_32_chars
-   - `PORT`: 8080
+### Environment Variables:
+Add these in your hosting provider's "Environment" settings:
+- `DB_URL`: `jdbc:postgresql://db.your-id.supabase.co:5432/postgres`
+- `DB_USERNAME`: `postgres`
+- `DB_PASSWORD`: `your_supabase_password`
+- `JWT_SECRET`: `your_secure_random_string`
+- `FRONTEND_URL`: `http://localhost:3000,https://your-frontend.vercel.app` (comma separated)
+- `PORT`: `8080`
 
-## 3. Frontend Deployment (Vercel)
-[Vercel](https://vercel.com) is the best for React apps.
+## 3. Frontend Deployment (Vercel / Netlify)
+Connect your `sms-frontend` folder.
 
-1. Connect your GitHub repository to Vercel.
-2. Select the `sms-frontend` directory.
-3. In **Environment Variables**, add:
-   - `REACT_APP_API_URL`: Your deployed Render backend URL (e.g., `https://sms-backend.onrender.com`)
-4. Deploy!
-
-## 4. Connecting the Two
-Ensure your backend `SecurityConfig` allows the Vercel URL in its CORS configuration if you want to be more secure (currently it allows `*`).
+### Environment Variables:
+- `REACT_APP_API_URL`: `https://your-backend-url.onrender.com`
 
 ---
 
-### Local Testing with Environment Variables
-To test locally using the production-ready configuration:
-```powershell
-$env:DB_URL="jdbc:postgresql://localhost:5432/student_management"
-$env:DB_USERNAME="postgres"
-$env:DB_PASSWORD="your_password"
-$env:JWT_SECRET="your_secret"
-mvn spring-boot:run
-```
+## 4. Final Checklist
+1. **CORS**: Ensure `FRONTEND_URL` in the backend environment variables includes your deployed frontend URL.
+2. **Database Tables**: The backend is set to `spring.jpa.hibernate.ddl-auto=update`, so it will automatically create tables in Supabase on the first run.
+3. **Admin User**: The first time you log in as `admin@sms.com` / `admin123`, the system handles it via hardcoded logic in `AuthService`.
